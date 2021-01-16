@@ -4,8 +4,8 @@
  *
  * Automatically deploy the code using PHP and Git.
  *
- * @version 1.3.1
- * @link    https://github.com/markomarkovic/simple-php-git-deploy/
+ * @version 1.4.0
+ * @link    https://github.com/NanoCode012/simple-php-git-deploy/
  */
 
 // =========================================[ Configuration start ]===
@@ -40,7 +40,7 @@ if (!defined('SECRET_ACCESS_TOKEN')) define('SECRET_ACCESS_TOKEN', 'BetterChange
  *
  * @var string
  */
-if (!defined('REMOTE_REPOSITORY')) define('REMOTE_REPOSITORY', 'https://github.com/markomarkovic/simple-php-git-deploy.git');
+if (!defined('REMOTE_REPOSITORY')) define('REMOTE_REPOSITORY', 'https://github.com/NanoCode012/simple-php-git-deploy.git');
 
 /**
  * The branch that's being deployed.
@@ -48,7 +48,7 @@ if (!defined('REMOTE_REPOSITORY')) define('REMOTE_REPOSITORY', 'https://github.c
  *
  * @var string
  */
-if (!defined('BRANCH')) define('BRANCH', 'master');
+if (!defined('BRANCH')) define('BRANCH', 'main');
 
 /**
  * The location that the code is going to be deployed to.
@@ -80,7 +80,9 @@ if (!defined('DELETE_FILES')) define('DELETE_FILES', false);
  * @var serialized array of strings
  */
 if (!defined('EXCLUDE')) define('EXCLUDE', serialize(array(
-	'.git',
+    '.git',
+    'README.md',
+    'LICENSE'
 )));
 
 /**
@@ -167,6 +169,7 @@ if (!defined('EMAIL_ON_ERROR')) define('EMAIL_ON_ERROR', false);
 if (!isset($_GET['sat']) || $_GET['sat'] !== SECRET_ACCESS_TOKEN || SECRET_ACCESS_TOKEN === 'BetterChangeMeNowOrSufferTheConsequences') {
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden', true, 403);
 }
+
 ob_start();
 ?>
 <!DOCTYPE html>
@@ -201,6 +204,7 @@ Checking the environment ...
 Running as <b><?php echo trim(shell_exec('whoami')); ?></b>.
 
 <?php
+
 // Check if the required programs are available
 $requiredBinaries = array('git', 'rsync');
 if (defined('BACKUP_DIR') && BACKUP_DIR !== false) {
@@ -236,6 +240,21 @@ Deploying <?php echo REMOTE_REPOSITORY; ?> <?php echo BRANCH."\n"; ?>
 to        <?php echo TARGET_DIR; ?> ...
 
 <?php
+
+/**
+ * For long running deploys and BitBucket webhooks (10 sec timeout)
+ */
+if (!isset($_GET['verbose'])) {
+    echo "Verbose not set. Passed authentication and environment check. Returning success to prevent timeout.";
+    $size = ob_get_length();
+    header('Content-type: text/plain; charset=utf-8');
+    header("Content-Length: {$size}");
+    header("Connection: close");
+    ob_end_flush();
+    ob_flush();
+    flush();
+}
+
 // The commands
 $commands = array();
 
