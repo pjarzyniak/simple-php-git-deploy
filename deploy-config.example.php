@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Deployment configuration
  *
@@ -9,7 +10,7 @@
  * That way, you won't have to edit the configuration again if you download the
  * new version of `deploy.php`.
  *
- * @version 1.4.0
+ * @version 1.4.1
  */
 
 /**
@@ -81,7 +82,7 @@ define('EXCLUDE', serialize(array(
  *
  * @var string Full path including the trailing slash
  */
-define('TMP_DIR', '/tmp/spgd-'.md5(REMOTE_REPOSITORY).'/');
+define('TMP_DIR', '/tmp/spgd-' . md5(REMOTE_REPOSITORY) . '/');
 
 /**
  * Whether to remove the TMP_DIR after the deployment.
@@ -95,7 +96,7 @@ define('CLEAN_UP', true);
  *
  * @var string Full path to the file name
  */
-define('VERSION_FILE', TMP_DIR.'VERSION');
+define('VERSION_FILE', TMP_DIR . 'VERSION');
 
 /**
  * Time limit for each command.
