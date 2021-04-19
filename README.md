@@ -6,6 +6,7 @@ _Automatically deploy the code using PHP and Git._
 * Added a verbose option, so the server will return a pre-mature success message to Github to counteract the 10 second timeout
 * Added option to use `secret` in Github to increase security
 * Updated code to mitigate timing attacks
+* Updated code to only run for matching branches
 
 ## Requirements
 
