@@ -10,7 +10,7 @@
  * That way, you won't have to edit the configuration again if you download the
  * new version of `deploy.php`.
  *
- * @version 1.5.1
+ * @version 1.5.2
  */
 
 /**
@@ -82,7 +82,7 @@ define('EXCLUDE', serialize(array(
  *
  * @var string Full path including the trailing slash
  */
-define('TMP_DIR', '/tmp/spgd-' . md5(REMOTE_REPOSITORY) . '/');
+define('TMP_DIR', '/tmp/spgd-' . md5(REMOTE_REPOSITORY . ':' . BRANCH) . '/');
 
 /**
  * Whether to remove the TMP_DIR after the deployment.
